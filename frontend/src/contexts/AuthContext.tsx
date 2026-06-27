@@ -43,8 +43,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = () => {
     // We redirect to the backend logout endpoint which will clear the cookie and redirect back
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://stunning-acceptance-production-9c5c.up.railway.app/api/v1";
-    window.location.href = `${apiUrl}/auth/logout`;
+    let API_URL = process.env.NEXT_PUBLIC_API_URL || "https://stunning-acceptance-production-9c5c.up.railway.app/api/v1";
+    if (API_URL.endsWith('/')) API_URL = API_URL.slice(0, -1);
+    if (!API_URL.endsWith('/api/v1')) API_URL += '/api/v1';
+    window.location.href = `${API_URL}/auth/logout`;
   };
 
   return (
