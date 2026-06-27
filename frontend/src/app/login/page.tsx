@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-export default function LoginPage() {
+function LoginContent() {
   const [activeTab, setActiveTab] = useState<"citizen" | "admin">("citizen");
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
@@ -174,5 +174,17 @@ export default function LoginPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex-1 w-full bg-background text-on-surface flex items-center justify-center min-h-screen">
+        <div className="text-on-surface-variant">Loading...</div>
+      </div>
+    }>
+      <LoginContent />
+    </Suspense>
   );
 }
