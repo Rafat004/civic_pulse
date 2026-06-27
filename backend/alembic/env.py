@@ -24,7 +24,7 @@ from app.core.config import settings
 from app.db.base import Base
 import app.models  # ensure models are loaded
 
-config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
+config.set_main_option("sqlalchemy.url", settings.DB_URL)
 
 target_metadata = Base.metadata
 

@@ -5,10 +5,13 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-DATABASE_URL = os.getenv("DATABASE_URL")
+DB_URL = os.getenv("DB_URL")
 
 async def main():
-    engine = create_async_engine(DATABASE_URL)
+    if not DB_URL:
+        print("Error: DB_URL environment variable not set.")
+        return
+    engine = create_async_engine(DB_URL)
     async with engine.begin() as conn:
         try:
             await conn.execute(text("ALTER TABLE users ADD COLUMN hashed_password VARCHAR;"))

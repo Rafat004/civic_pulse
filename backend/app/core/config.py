@@ -4,7 +4,7 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "CivicPulse"
     API_V1_STR: str = "/api/v1"
     
-    DATABASE_URL: str
+    DB_URL: str
     SECRET_KEY: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440
     
