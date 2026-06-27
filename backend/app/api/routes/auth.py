@@ -35,12 +35,9 @@ async def login_google(request: Request, action: str = "login"):
 @router.get("/google/callback")
 async def auth_google(request: Request, db: AsyncSession = Depends(get_db)):
     try:
-        # Force HTTPS redirect_uri for validation just like in login
-        redirect_uri = str(request.url_for('auth_google'))
-        if "localhost" not in redirect_uri and "127.0.0.1" not in redirect_uri:
-            redirect_uri = redirect_uri.replace("http://", "https://")
-            
-        token = await oauth.google.authorize_access_token(request, redirect_uri=redirect_uri)
+        # authlib will automatically use request.url, which will be https 
+        # thanks to the --forwarded-allow-ips="*" flag in the Procfile
+        token = await oauth.google.authorize_access_token(request)
     except Exception as e:
         print(f"OAuth Error: {e}")
         raise HTTPException(status_code=400, detail=f"Authentication failed: {str(e)}")
