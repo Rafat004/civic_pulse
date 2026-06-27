@@ -43,8 +43,7 @@ civicpulse.db
 # Logs and databases
 *.log
 backend/error.log
-backend/alembic.ini
-!backend/alembic.ini.example
+
 
 # Environment variables
 .env
