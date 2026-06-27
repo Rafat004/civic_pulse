@@ -15,6 +15,8 @@ class Settings(BaseSettings):
     
     STORAGE_BACKEND: str = "local"
     CLOUDINARY_URL: str = ""
+    
+    FRONTEND_URL: str = "http://localhost:3000"
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 

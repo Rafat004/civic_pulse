@@ -43,7 +43,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = () => {
     // We redirect to the backend logout endpoint which will clear the cookie and redirect back
-    window.location.href = "http://localhost:8000/api/v1/auth/logout";
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+    window.location.href = `${apiUrl}/auth/logout`;
   };
 
   return (

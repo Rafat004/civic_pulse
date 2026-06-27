@@ -25,8 +25,11 @@ oauth.register(
 @router.get("/google/login")
 async def login_google(request: Request, action: str = "login"):
     request.session["auth_action"] = action
-    # The callback URI must match what's registered in Google Cloud Console
-    redirect_uri = "http://localhost:8000/api/v1/auth/google/callback"
+    # Build redirect URI dynamically
+    redirect_uri = str(request.url_for('auth_google'))
+    # Ensure it uses https in production
+    if "localhost" not in redirect_uri and "127.0.0.1" not in redirect_uri:
+        redirect_uri = redirect_uri.replace("http://", "https://")
     return await oauth.google.authorize_redirect(request, redirect_uri)
 
 @router.get("/google/callback")
@@ -53,7 +56,7 @@ async def auth_google(request: Request, db: AsyncSession = Depends(get_db)):
     action = request.session.get("auth_action", "login")
     
     if action == "login" and not user:
-        return RedirectResponse(url="http://localhost:3000/login?error=AccountNotFound")
+        return RedirectResponse(url=f"{settings.FRONTEND_URL}/login?error=AccountNotFound")
     
     if not user:
         user = User(
@@ -72,9 +75,9 @@ async def auth_google(request: Request, db: AsyncSession = Depends(get_db)):
     
     # Redirect to frontend dashboard based on role
     if user.role == "admin":
-        redirect_url = "http://localhost:3000/admin/queue"
+        redirect_url = f"{settings.FRONTEND_URL}/admin/queue"
     else:
-        redirect_url = "http://localhost:3000/my-reports"
+        redirect_url = f"{settings.FRONTEND_URL}/my-reports"
         
     response = RedirectResponse(url=redirect_url)
     
@@ -83,7 +86,8 @@ async def auth_google(request: Request, db: AsyncSession = Depends(get_db)):
         key="access_token",
         value=f"Bearer {access_token}",
         httponly=True,
-        samesite="lax",
+        samesite="none",
+        secure=True,
         max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
         path="/"
     )
@@ -101,8 +105,8 @@ async def get_me(current_user: User = Depends(get_current_user)):
 
 @router.get("/logout")
 async def logout():
-    response = RedirectResponse(url="http://localhost:3000/")
-    response.delete_cookie("access_token")
+    response = RedirectResponse(url=f"{settings.FRONTEND_URL}/")
+    response.delete_cookie("access_token", samesite="none", secure=True, path="/")
     return response
 
 @router.post("/local/signup")
@@ -127,7 +131,8 @@ async def local_signup(user_in: LocalUserCreate, db: AsyncSession = Depends(get_
         key="access_token",
         value=f"Bearer {access_token}",
         httponly=True,
-        samesite="lax",
+        samesite="none",
+        secure=True,
         max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
         path="/"
     )
@@ -152,7 +157,8 @@ async def local_login(user_in: LocalUserLogin, db: AsyncSession = Depends(get_db
         key="access_token",
         value=f"Bearer {access_token}",
         httponly=True,
-        samesite="lax",
+        samesite="none",
+        secure=True,
         max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
         path="/"
     )

@@ -18,7 +18,11 @@ app.add_middleware(SessionMiddleware, secret_key=settings.SECRET_KEY)
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"], # Next.js frontend
+    allow_origins=[
+        "http://localhost:3000", 
+        "http://127.0.0.1:3000",
+        settings.FRONTEND_URL
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
