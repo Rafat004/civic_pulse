@@ -1,0 +1,91 @@
+# =========================
+# Operating System Files
+# =========================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# =========================
+# IDEs and Editors
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# =========================
+# Python / Backend
+# =========================
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments
+venv/
+env/
+ENV/
+.venv/
+
+# Database files
+*.db
+*.sqlite3
+civicpulse.db
+
+# Logs and databases
+*.log
+backend/error.log
+backend/alembic.ini
+!backend/alembic.ini.example
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# File uploads
+backend/uploads/
+
+# Testing
+.pytest_cache/
+htmlcov/
+.coverage
+
+# =========================
+# Node.js / Frontend
+# =========================
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Next.js specific
+.next/
+out/
+build/
+.swc/
+
+# Environment variables
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+# Vercel / Deployments
+.vercel/
+
+# =========================
+# General
+# =========================
+coverage/
+dist/
+build/
+temp/
+tmp/
