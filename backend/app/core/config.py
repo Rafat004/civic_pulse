@@ -16,9 +16,7 @@ class Settings(BaseSettings):
     STORAGE_BACKEND: str = "local"
     CLOUDINARY_URL: str = ""
     
-    @property
-    def FRONTEND_URL(self) -> str:
-        return "https://civic-pulse-qxgmy0td4-islamrafatul004-8764s-projects.vercel.app"
+    FRONTEND_URL: str = "https://civic-pulse-qxgmy0td4-islamrafatul004-8764s-projects.vercel.app"
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
 settings = Settings()
