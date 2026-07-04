@@ -57,9 +57,6 @@ async def auth_google(request: Request, db: AsyncSession = Depends(get_db)):
     
     action = request.session.get("auth_action", "login")
     
-    if action == "login" and not user:
-        return RedirectResponse(url=f"{settings.FRONTEND_URL}/login?error=AccountNotFound")
-    
     if not user:
         user = User(
             email=email,
