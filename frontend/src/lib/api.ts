@@ -39,9 +39,7 @@ export interface SystemSettings {
   session_timeout: number;
 }
 
-let API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://stunning-acceptance-production-9c5c.up.railway.app/api/v1";
-if (API_BASE_URL.endsWith('/')) API_BASE_URL = API_BASE_URL.slice(0, -1);
-if (!API_BASE_URL.endsWith('/api/v1')) API_BASE_URL += '/api/v1';
+let API_BASE_URL = "/api/v1";
 
 export async function fetchApi(endpoint: string, options: RequestInit = {}) {
   const url = `${API_BASE_URL}${endpoint}`;

@@ -25,19 +25,15 @@ oauth.register(
 @router.get("/google/login")
 async def login_google(request: Request, action: str = "login"):
     request.session["auth_action"] = action
-    # Build redirect URI dynamically
-    redirect_uri = str(request.url_for('auth_google'))
-    # Ensure it uses https in production
-    if "localhost" not in redirect_uri and "127.0.0.1" not in redirect_uri:
-        redirect_uri = redirect_uri.replace("http://", "https://")
+    # Force redirect URI to go through the frontend proxy to avoid 3rd-party cookie issues
+    redirect_uri = f"{settings.FRONTEND_URL}{settings.API_V1_STR}/auth/google/callback"
     return await oauth.google.authorize_redirect(request, redirect_uri)
 
 @router.get("/google/callback")
 async def auth_google(request: Request, db: AsyncSession = Depends(get_db)):
     try:
-        # authlib will automatically use request.url, which will be https 
-        # thanks to the --forwarded-allow-ips="*" flag in the Procfile
-        token = await oauth.google.authorize_access_token(request)
+        redirect_uri = f"{settings.FRONTEND_URL}{settings.API_V1_STR}/auth/google/callback"
+        token = await oauth.google.authorize_access_token(request, redirect_uri=redirect_uri)
     except Exception as e:
         print(f"OAuth Error: {e}")
         raise HTTPException(status_code=400, detail=f"Authentication failed: {str(e)}")

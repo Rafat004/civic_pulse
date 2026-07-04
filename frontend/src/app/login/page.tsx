@@ -9,13 +9,7 @@ function LoginContent() {
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
   
-  let API_URL = process.env.NEXT_PUBLIC_API_URL;
-  if (!API_URL || !API_URL.startsWith('http')) {
-    API_URL = "https://stunning-acceptance-production-9c5c.up.railway.app/api/v1";
-  } else {
-    if (API_URL.endsWith('/')) API_URL = API_URL.slice(0, -1);
-    if (!API_URL.endsWith('/api/v1')) API_URL += '/api/v1';
-  }
+  let API_URL = "/api/v1";
 
   return (
     <div className="flex-1 w-full bg-background text-on-surface flex items-center justify-center relative overflow-hidden font-body-md antialiased py-xl">
