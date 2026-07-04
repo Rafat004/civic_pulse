@@ -32,8 +32,7 @@ async def login_google(request: Request, action: str = "login"):
 @router.get("/google/callback")
 async def auth_google(request: Request, db: AsyncSession = Depends(get_db)):
     try:
-        redirect_uri = f"{settings.FRONTEND_URL}{settings.API_V1_STR}/auth/google/callback"
-        token = await oauth.google.authorize_access_token(request, redirect_uri=redirect_uri)
+        token = await oauth.google.authorize_access_token(request)
     except Exception as e:
         print(f"OAuth Error: {e}")
         raise HTTPException(status_code=400, detail=f"Authentication failed: {str(e)}")
